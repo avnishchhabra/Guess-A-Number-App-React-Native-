@@ -1,20 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import Header from "./components/Header";
+import StartGame from "./screens/StartGame";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <View style={styles.app}>
       <StatusBar style="auto" />
+      <Header title="Guess the number" />
+      <StartGame />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  app: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 40,
   },
 });
