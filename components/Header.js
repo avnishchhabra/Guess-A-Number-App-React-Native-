@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: 30,
+    fontFamily: "open-sans-bold",
   },
 });
 export default Header;

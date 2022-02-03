@@ -11,6 +11,8 @@ import {
 import Card from "../components/Card";
 import Input from "../components/Input";
 import NumberContainer from "../components/NumberContainer";
+import BodyText from "../components/texts/BodyText";
+import TitleText from "../components/texts/TitleText";
 import colors from "../constants/colors";
 
 const StartGame = (props) => {
@@ -53,9 +55,9 @@ const StartGame = (props) => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.startScreen}>
-        <Text style={styles.bigText}>Game Starts!</Text>
+        <TitleText>Game Starts!</TitleText>
         <Card style={styles.inputContainer}>
-          <Text style={styles.bigText}>Enter Number</Text>
+          <BodyText>Enter Number</BodyText>
           <Input
             value={input}
             onChangeText={handleInputChange}
@@ -92,9 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     padding: 20,
-  },
-  bigText: {
-    fontSize: 22,
   },
   inputContainer: {
     width: "100%",
