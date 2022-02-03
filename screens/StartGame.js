@@ -6,9 +6,11 @@ import {
   Button,
   Keyboard,
   TouchableWithoutFeedback,
+  Alert,
 } from "react-native";
 import Card from "../components/Card";
 import Input from "../components/Input";
+import NumberContainer from "../components/NumberContainer";
 import colors from "../constants/colors";
 
 const StartGame = () => {
@@ -21,16 +23,28 @@ const StartGame = () => {
   const resetHandler = () => setInput("");
   const confirmHandler = () => {
     const choosenNumber = parseInt(input);
-    if (choosenNumber <= 0 || choosenNumber > 99 || choosenNumber === NaN) {
+    if (choosenNumber <= 0 || choosenNumber > 99 || isNaN(choosenNumber)) {
+      Alert.alert("Enter valid number", "Number must a valid number", [
+        { text: "Okay!", onPress: resetHandler },
+      ]);
       return;
     }
     setSelectedNum(choosenNumber);
     setInput("");
     setConfirmed(true);
+    Keyboard.dismiss();
   };
   let finalOutput;
   if (confirmed) {
-    finalOutput = <Text>Choosen number is {selectedNum}</Text>;
+    finalOutput = (
+      <View style={styles.finalOutput}>
+        <Text>Your number</Text>
+        <NumberContainer>{selectedNum}</NumberContainer>
+        <View style={styles.startBtn}>
+          <Button color={colors.primary} title="START GAME" />
+        </View>
+      </View>
+    );
   }
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -97,6 +111,17 @@ const styles = StyleSheet.create({
   },
   btn: {
     width: 100,
+  },
+  finalOutput: {
+    marginTop: 15,
+    borderWidth: 2,
+    padding: 25,
+    borderRadius: 8,
+    borderColor: colors.secondary,
+    alignItems: "center",
+  },
+  startBtn: {
+    marginTop: 15,
   },
 });
 
