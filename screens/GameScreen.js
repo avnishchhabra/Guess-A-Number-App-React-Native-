@@ -1,7 +1,16 @@
-import { Alert, Button, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
+import MainButton from "../components/MainButton";
 
 const generateRandomNumberBw = (mini, maxi, exclude) => {
   const min = Math.ceil(mini);
@@ -16,13 +25,12 @@ const generateRandomNumberBw = (mini, maxi, exclude) => {
 };
 
 const GameScreen = ({ userNum, onGameOver }) => {
-  const [randNum, setRandNum] = useState(
-    generateRandomNumberBw(1, 100, userNum)
-  );
-  const [rounds, setRounds] = useState(0);
+  const initialGuess = generateRandomNumberBw(1, 100, userNum);
+  const [randNum, setRandNum] = useState(initialGuess);
+  const [pastGuesses, setPastGuesses] = useState([initialGuess]);
   useEffect(() => {
     if (randNum === userNum) {
-      onGameOver(rounds);
+      onGameOver(pastGuesses.length);
     }
   }, [randNum, userNum, onGameOver]);
   const currentLow = useRef(1);
@@ -47,19 +55,35 @@ const GameScreen = ({ userNum, onGameOver }) => {
       randNum
     );
     setRandNum(next);
-    setRounds((prevRounds) => prevRounds + 1);
+    // setRounds((prevRounds) => prevRounds + 1);
+    setPastGuesses((prevGuesses) => [next, ...prevGuesses]);
   };
   return (
     <View style={styles.screen}>
       <Text>Opponent guess</Text>
       <NumberContainer>{randNum}</NumberContainer>
       <Card style={styles.btnContainer}>
-        <Button title="LOWER" onPress={nextNumHandler.bind(this, "lower")} />
-        <Button
-          title="GREATER"
-          onPress={nextNumHandler.bind(this, "greater")}
-        />
+        <MainButton onPress={nextNumHandler.bind(this, "lower")}>
+          <Ionicons name="md-remove" size={24} color="white" />
+        </MainButton>
+        <MainButton onPress={nextNumHandler.bind(this, "greater")}>
+          <Ionicons name="md-add" size={24} color="white" />
+        </MainButton>
       </Card>
+      <View style={styles.listContainer}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.list}
+        >
+          {pastGuesses.map((guess, i) => (
+            <View key={i} style={styles.listItem}>
+              <Text>#{pastGuesses.length - i}</Text>
+              <Text>{" " + guess}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -78,5 +102,22 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     width: "80%",
     padding: 20,
+  },
+  listContainer: {
+    width: "100%",
+    flex: 1,
+  },
+  list: {
+    alignItems: "center",
+  },
+  listItem: {
+    borderColor: "#ccc",
+    borderWidth: 1,
+    padding: 17,
+    flexDirection: "row",
+    marginVertical: 10,
+    borderRadius: 10,
+    justifyContent: "space-between",
+    width: "40%",
   },
 });

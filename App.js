@@ -40,7 +40,6 @@ export default function App() {
     setUserNum(null);
   };
   let screen = <StartGame onStart={startGameHandler} />;
-  screen = <GameOver number={2} rounds={4} onNewGameStart={newGameHandler} />;
   if (userNum && rounds <= 0) {
     screen = <GameScreen onGameOver={gameOverHandler} userNum={userNum} />;
   }
